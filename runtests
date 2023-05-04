@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+echo -e "\n*** valid.bats ***\n"
+./test/bats/bin/bats ./test/valid.bats
+
