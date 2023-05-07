@@ -2,4 +2,5 @@
 
 echo -e "\n*** valid.bats ***\n"
 ./test/bats/bin/bats ./test/valid.bats
-
+echo -e "\n*** encrypt.bats ***\n"
+./test/bats/bin/bats ./test/encrypt.bats
