@@ -24,6 +24,8 @@ The toy project implements a bash script program for encrypting messages and fil
 
 Stage 1: message read in and syntax check
 
+Stage 2: Encryption of single letters
+
 Run tests using bats
 
 Have fun!
