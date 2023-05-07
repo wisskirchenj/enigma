@@ -38,3 +38,4 @@ Have fun!
 
 04.05.23 Stage 1 completed - just regexp-check of message input
 
+07.05.23 Stage 2 completed - Encryption of letters
