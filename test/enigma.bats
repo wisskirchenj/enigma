@@ -10,7 +10,11 @@ enigma() {
 }
 
 file_written() {
-    [[ -e $TEST_FILE ]] && return 0 || return 1
+    [ -e $1 ] && return 0 || return 1
+}
+
+check_file_content() {
+    [ "`cat $1`" = "$2" ] && return 0 || return 1
 }
 
 # ---------- happy case testing -------
@@ -30,29 +34,37 @@ Enter an option:"""
 
 @test "create out.test" {
         rm -f $TEST_FILE
-        refute file_written
-        run enigma "1\n${TEST_FILE}\nA NEW MESSAGE\n0"
+        refute file_written $TEST_FILE
+        run enigma "1\n$TEST_FILE\nA NEW MESSAGE\n0"
         assert_output --partial "The file was created successfully!"
         assert_output --partial "Enter a message:"
         assert_output --partial "Enter the filename:"
-        assert file_written
+        assert file_written $TEST_FILE
 }
 
-@test "read in.text" {
-        run enigma "2\n${TEST_FILE}\n0"
+@test "read out.test" {
+        run enigma "2\n$TEST_FILE\n0"
         assert_output --partial "File content:"
         assert_output --partial "A NEW MESSAGE"
         assert_output --partial "Enter the filename:"
 }
 
-@test "encrypt" {
-        run enigma "3\n0"
-        assert_output --partial "Not implemented!"
+@test "encrypt out.test" {
+        assert file_written $TEST_FILE
+        run enigma "3\n$TEST_FILE\n0"
+        assert_output --partial "Success"
+        refute file_written $TEST_FILE
+        assert file_written $TEST_FILE.enc
+        assert check_file_content $TEST_FILE.enc "D QHZ PHVVDJH"
 }
 
-@test "decrypt" {
-        run enigma "4\n0"
-        assert_output --partial "Not implemented!"
+@test "decrypt out.test.enc" {
+        assert file_written $TEST_FILE.enc
+        run enigma "4\n$TEST_FILE.enc\n0"
+        assert_output --partial "Success"
+        refute file_written $TEST_FILE.enc
+        assert file_written $TEST_FILE
+        assert check_file_content $TEST_FILE "A NEW MESSAGE"
 }
 
 # ---------- error case testing -------
