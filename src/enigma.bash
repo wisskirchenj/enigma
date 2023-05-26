@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# enigma stage 5
+# enigma stage 6
+
+OPEN_SSL="openssl enc -aes-256-cbc -pbkdf2 -nosalt"
 
 print_menu() {
   echo """
@@ -22,8 +24,7 @@ create() {
 }
 
 write_it() {
-  echo $1 > $2
-  echo "The file was created successfully!"
+  echo $1 > $2 && echo "The file was created successfully!"
 }
 
 read_it() {
@@ -35,30 +36,10 @@ crypt_it() {
 }
 
 crypt_message() {
-  # for encrypt add 3 for decrypt add 23 to ASCII
-  key=`[ $1 = "enc" ] && echo 3 || echo 23`
-  message=`cat $2`
-  unset encrypted
-  for ((i=0;i<${#message};i++)); do
-      char=${message:i:1}
-      encrypted=${encrypted}`crypt_char $char`
-  done
-  [ $1 = "enc" ] && echo $encrypted > $2.$1 || echo $encrypted > ${2%.enc}
-  rm $2 && echo Success
-}
-
-crypt_char() {
-  if [ ! $1 = " " ]; then
-    ascii_letter=$(printf %d \'$1)
-    ascii_encrypted=$(( $ascii_letter + $key ))
-    # rotate alphabet if encrypted > Ascii('Z')
-    if [ $(($ascii_encrypted)) -gt 90 ]; then
-      ascii_encrypted=$(( $ascii_encrypted - 26 ))
-    fi
-    echo $(printf "\x`printf %x $ascii_encrypted`")
-  else # don't cipher spaces
-    echo " "
-  fi
+  echo "Enter password:" && read pw
+  [[ $1 == "enc" ]] && { opt="-e"; out=$2.$1; } || { opt="-d"; out=${2%.enc}; }
+  $OPEN_SSL -in $2 $opt -out $out -pass pass:"$pw" &> /dev/null \
+        && { echo "Success"; rm $2; } ||  { echo "Fail"; rm $out; }
 }
 
 echo "Welcome to the Enigma!"

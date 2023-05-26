@@ -8,4 +8,4 @@
 /dataSources/
 /dataSources.local.xml
 /build
-out.test
+out.test*

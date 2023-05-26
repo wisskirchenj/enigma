@@ -3,6 +3,7 @@ setup() {
     load 'test_helper/bats-assert/load'
     SRC_DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )" >/dev/null 2>&1 && pwd )/../src"
     TEST_FILE=out.test
+    PASS=secret
 }
 
 enigma() {
@@ -10,11 +11,11 @@ enigma() {
 }
 
 file_written() {
-    [ -e $1 ] && return 0 || return 1
+    [[ -e $1 ]] && return 0 || return 1
 }
 
 check_file_content() {
-    [ "`cat $1`" = "$2" ] && return 0 || return 1
+    [[ `cat $1` = $2 ]] && return 0 || return 1
 }
 
 # ---------- happy case testing -------
@@ -51,16 +52,16 @@ Enter an option:"""
 
 @test "encrypt out.test" {
         assert file_written $TEST_FILE
-        run enigma "3\n$TEST_FILE\n0"
+        run enigma "3\n$TEST_FILE\n$PASS\n0"
         assert_output --partial "Success"
+        assert_output --partial "Enter password:"
         refute file_written $TEST_FILE
         assert file_written $TEST_FILE.enc
-        assert check_file_content $TEST_FILE.enc "D QHZ PHVVDJH"
 }
 
 @test "decrypt out.test.enc" {
         assert file_written $TEST_FILE.enc
-        run enigma "4\n$TEST_FILE.enc\n0"
+        run enigma "4\n$TEST_FILE.enc\n$PASS\n0"
         assert_output --partial "Success"
         refute file_written $TEST_FILE.enc
         assert file_written $TEST_FILE
@@ -92,4 +93,13 @@ Enter an option:"""
 @test "wrong filename 1" {
         run enigma "1\nnot1.allowed\n0"
         assert_output --partial "File name can contain letters and dots only!"
+}
+
+@test "decrypt wrong password" {
+        run enigma "3\n$TEST_FILE\n$PASS\n0"
+        assert file_written $TEST_FILE.enc
+        run enigma "4\n$TEST_FILE.enc\nwrong\n0"
+        assert_output --partial "Fail"
+        assert file_written $TEST_FILE.enc
+        refute file_written $TEST_FILE
 }

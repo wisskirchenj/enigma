@@ -32,13 +32,15 @@ Stage 4: Menu based file creation and read application
 
 Stage 5: Menu based application to create, encrypt, decrypt and read message files
 
+Stage 6: Encrypt and decrypt arbitrary files now using AES-256 algorithm.
+
 Run tests using bats
 
 Have fun!
 
 ## Project completion
 
-[//]: # (Project was completed on 23.10.23.)
+Project was completed on 23.10.23.
 
 ## Progress
 
@@ -55,3 +57,5 @@ the output of a function as return value
 
 26.05.23 Stage 5 completed - Expand the menu to encrypt and decrypt previously created files with Caesar cipher. bats
 testing with custom assertions checking file existence and contents
+
+26.05.23 Final Stage 6 completed - Use `openssl enc` with AES-256 algorithm to encode and decode arbitrary files now.
