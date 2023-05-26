@@ -40,7 +40,7 @@ Have fun!
 
 ## Project completion
 
-Project was completed on 23.10.23.
+Project was completed on 26.05.23.
 
 ## Progress
 
