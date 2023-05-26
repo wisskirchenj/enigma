@@ -91,7 +91,6 @@ function cesar() {
         assert_output --partial "This is not a valid message!"
 }
 
-
 @test "d HANS-MOSER" {
         run cesar "d\nHANS-MOSER"
         assert_output --partial "Enter a command:"
