@@ -26,6 +26,12 @@ Stage 1: message read in and syntax check
 
 Stage 2: Encryption of single letters
 
+Stage 3: Caesar Cipher Encryption and Decryption of messages
+
+Stage 4: Menu based file creation and read application
+
+Stage 5: Menu based application to create, encrypt, decrypt and read message files
+
 Run tests using bats
 
 Have fun!
@@ -41,3 +47,11 @@ Have fun!
 04.05.23 Stage 1 completed - just regexp-check of message input
 
 07.05.23 Stage 2 completed - Encryption of letters
+
+07.05.23 Stage 3 completed - Caesar Cipher Encryption and Decryption of messages. Use `$(cmd)` or `` `cmd` `` to get
+the output of a function as return value
+
+26.05.23 Stage 4 completed - Menu - based application to write message to a file and read it
+
+26.05.23 Stage 5 completed - Expand the menu to encrypt and decrypt previously created files with Caesar cipher. bats
+testing with custom assertions checking file existence and contents
